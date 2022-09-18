@@ -11,6 +11,8 @@ runs:
   using: 'composite'
   steps:
     - uses: actions/checkout@v3
+      with:
+        ref: ${{ inputs.github_ref }}
 
     - uses: actions/setup-node@v3
       with:
@@ -21,7 +23,7 @@ runs:
       id: cache
       with:
         path: node_modules/
-        key: ${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+        key: mainsail-node-modules-${{ hashFiles('package-lock.json') }}
 
     - name: Build
       shell: bash
@@ -31,7 +33,7 @@ runs:
       id: cache-dist
       with:
         path: dist/
-        key: ${{ runner.os }}-${{ inputs.github_ref }}
+        key: mainsail-dist-${{ inputs.github_ref }}
 
     - uses: actions/upload-artifact@v3
       with:
