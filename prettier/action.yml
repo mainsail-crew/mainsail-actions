@@ -1,0 +1,27 @@
+name: '⑇ Prettier'
+author: 'Stefan Dej (meteyou)'
+description: 'Prettier check'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+        cache: 'npm'
+
+    - name: Cache node_modules
+      uses: actions/cache@v3
+      id: cache
+      with:
+        path: node_modules/
+        key: mainsail-node-modules-${{ hashFiles('package-lock.json') }}
+
+    - name: Run prettier
+      uses: creyD/prettier_action@v4.2
+      with:
+        dry: True
