@@ -1,0 +1,38 @@
+name: '🏗 Build'
+author: 'Stefan Dej (meteyou)'
+description: 'Build Mainsail zip'
+
+inputs:
+  github_ref:
+    description: 'Github ref to checkout a special branch'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Fetch repo
+      uses: actions/checkout@v3
+
+    - name: Install node
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+        cache: 'npm'
+
+    - name: Cache dependencies
+      id: cache
+      uses: actions/cache@v3
+      with:
+        path: node_modules/
+        key: mainsail-node-modules-${{ hashFiles('package-lock.json') }}
+
+    - name: List the state of node modules
+      if: steps.cache.outputs.cache-hit != 'true'
+      continue-on-error: true
+      shell: bash
+      run: npm list
+
+    - name: Install dependencies
+      if: steps.cache.outputs.cache-hit != 'true'
+      shell: bash
+      run: npm ci
