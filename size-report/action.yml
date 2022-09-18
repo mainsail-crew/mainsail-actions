@@ -1,0 +1,35 @@
+name: '⑇ Size report'
+author: 'Stefan Dej (meteyou)'
+description: 'Size report'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+        cache: 'npm'
+
+    - name: Cache node_modules
+      uses: actions/cache@v3
+      id: cache
+      with:
+        path: node_modules/
+        key: mainsail-node-modules-${{ hashFiles('package-lock.json') }}
+
+    - name: Check package.json was changed
+      id: changed-file-package-json
+      uses: tj-actions/changed-files@v23
+      with:
+        sha: ${{ github.event.pull_request.head.sha }}
+
+    - uses: preactjs/compressed-size-action@v2
+      if: contains(steps.changed-file-package-json.outputs.modified_files, 'package.json')
+      with:
+        strip-hash: "\\b\\w{8}\\."
+        pattern: './dist/**/*.{js,css,html,json,woff2,svg,png}'
+        exclude: '{./dist/manifest.json,./dist/build.zip,**/*.map,**/node_modules/**}'
