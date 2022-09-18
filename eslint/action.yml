@@ -1,0 +1,26 @@
+name: '⑇ ESlint'
+author: 'Stefan Dej (meteyou)'
+description: 'ESlint check'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+        cache: 'npm'
+
+    - name: Cache node_modules
+      uses: actions/cache@v3
+      id: cache
+      with:
+        path: node_modules/
+        key: mainsail-node-modules-${{ hashFiles('package-lock.json') }}
+
+    - name: Run ESlint
+      shell: bash
+      run: npm run lint
