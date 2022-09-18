@@ -38,7 +38,7 @@ runs:
       id: cache-dist
       with:
         path: dist/
-        key: mainsail-dist-${{ inputs.github_sha }}
+        key: mainsail-dist-${{ github.sha }}
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v3
