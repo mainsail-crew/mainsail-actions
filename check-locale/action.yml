@@ -2,6 +2,11 @@ name: '⑇ i18n-extract'
 author: 'Stefan Dej (meteyou)'
 description: 'i18n-extract check'
 
+inputs:
+  github_token:
+    description: 'github secret token'
+    required: true
+
 runs:
   using: 'composite'
   steps:
@@ -51,4 +56,4 @@ runs:
           |:---|---:|---:|
           ${{join(steps.i18n-extract.outputs.*, '
           ')}}
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ inputs.github_token }}
