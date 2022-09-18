@@ -25,7 +25,7 @@ runs:
 
     - name: Check package.json was changed
       id: changed-file-package-json
-      uses: tj-actions/changed-files@v29
+      uses: tj-actions/changed-files@v29.0.7
 
     - uses: preactjs/compressed-size-action@v2
       if: contains(steps.changed-file-package-json.outputs.modified_files, 'package.json')
