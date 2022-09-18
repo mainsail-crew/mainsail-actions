@@ -2,14 +2,6 @@ name: '🏗 Build'
 author: 'Stefan Dej (meteyou)'
 description: 'Build Mainsail zip'
 
-inputs:
-  github_ref:
-    description: 'Github ref to checkout a special branch'
-    required: true
-  github_sha:
-    description: 'Github sha'
-    required: true
-
 runs:
   using: 'composite'
   steps:
@@ -38,7 +30,7 @@ runs:
       id: cache-dist
       with:
         path: dist/
-        key: mainsail-dist-${{ github.sha }}
+        key: mainsail-dist-${{ github.run_id }}-${{ github.run_number }}
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v3
