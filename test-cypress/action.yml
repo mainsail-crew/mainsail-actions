@@ -1,0 +1,38 @@
+name: '⑇ Cypress'
+author: 'Stefan Dej (meteyou)'
+description: 'Cypress test'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+        cache: 'npm'
+
+    - name: Cache node_modules
+      uses: actions/cache@v3
+      id: cache
+      with:
+        path: node_modules/
+        key: mainsail-node-modules-${{ hashFiles('package-lock.json') }}
+
+    - uses: actions/cache@v3
+      id: cache-dist
+      with:
+        path: dist/
+        key: mainsail-dist-${{ github.run_id }}-${{ github.run_number }}
+
+    - name: Build
+      if: steps.cache-dist.outputs.cache-hit != 'true'
+      shell: bash
+      run: npm run build
+
+    - name: Cypress run
+      uses: cypress-io/github-action@v4
+      with:
+        start: npm start
