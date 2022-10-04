@@ -11,7 +11,7 @@ runs:
     - name: Setup Node
       uses: actions/setup-node@v3
       with:
-        node-version: '16'
+        node-version: 18
         cache: 'npm'
 
     - name: Cache node_modules
@@ -35,4 +35,4 @@ runs:
     - name: Cypress run
       uses: cypress-io/github-action@v4
       with:
-        start: npm start
+        start: npm run preview
