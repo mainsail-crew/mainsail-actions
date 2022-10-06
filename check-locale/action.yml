@@ -18,7 +18,7 @@ runs:
     - name: Setup Node
       uses: actions/setup-node@v3
       with:
-        node-version: '16'
+        node-version: 18
         cache: 'npm'
 
     - name: Cache node_modules
@@ -52,6 +52,7 @@ runs:
       if: steps.changed-files.outputs.all_changed_files == 'true'
       uses: thollander/actions-comment-pull-request@v1
       with:
+        comment_includes: 'Language file analysis report'
         message: |
           Language file analysis report:
           |File|Missing Keys|Unused Keys|
